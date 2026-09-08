@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      API_PORT: 8001
+      FRONTEND_PORT: 5174
+      ECDAT_SCAN_ROOT: /app
+    volumes:
+      - ./demo-enterprise:/app/demo-enterprise:ro
+      - ecdat-data:/app/backend/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    depends_on:
+      - api
+    ports:
+      - "5174:80"
+
+volumes:
+  ecdat-data:
